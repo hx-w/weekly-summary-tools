@@ -88,7 +88,7 @@ let pyPort = null
 const createPyProc = () => {
   let port = '4242'
   let script = path.join('py', 'api_server.py')
-  pyProc = require('child_process').execFile('python', [script])
+  pyProc = require('child_process').spawn('python', [script])
   if (pyProc != null) {
     console.log('child process success')
   }
