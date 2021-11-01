@@ -79,3 +79,26 @@ if (isDevelopment) {
     })
   }
 }
+
+const path=require('path')
+
+let pyProc = null
+let pyPort = null
+
+const createPyProc = () => {
+  let port = '4242'
+  let script = path.join('py', 'api_server.py')
+  pyProc = require('child_process').execFile('python', [script])
+  if (pyProc != null) {
+    console.log('child process success')
+  }
+}
+
+const exitPyProc = () => {
+  pyProc.kill()
+  pyProc = null
+  pyPort = null
+}
+
+app.on('ready', createPyProc)
+app.on('will-quit', exitPyProc)
