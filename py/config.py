@@ -13,8 +13,8 @@ class Config(object):
         self.summary = '00_汇总'
         self.group = []
         self.prefix = '通用网格生成软件'
-        self.group_pattern = '0.+_.+组'
-        self.week_pattern = '\d{4}-\d{4}-\d{4}'
+        self.group_pattern = re.compile('0.+_.+组')
+        self.week_pattern = re.compile('\d{4}-\d{4}-\d{4}')
         self.template_group = ''
         self.template_project = ''
         logging.basicConfig(
@@ -42,8 +42,8 @@ class Config(object):
                 self.summary = config['file_structure']['summary']
                 self.group = config['file_structure']['group']
                 self.prefix = config['file_prefix']
-                self.group_pattern = config['group_pattern']
-                self.week_pattern = config['week_pattern']
+                self.group_pattern = re.compile(config['group_pattern'])
+                self.week_pattern = re.compile(config['week_pattern'])
                 self.template_group = config['file_structure']['template']['group_summary']
                 self.template_project = config['file_structure']['template']['project_summary']
                 self.source_sheet = config['source_sheet']
