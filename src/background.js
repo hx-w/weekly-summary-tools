@@ -88,7 +88,14 @@ let pyPort = null
 const createPyProc = () => {
   let port = '4242'
   let script = path.join('py', 'api_server.py')
-  pyProc = require('child_process').spawn('python', [script])
+  let arg = path.join('./', 'config.yml')
+  // pyProc = require('child_process').spawn('python', [script, arg])
+  pyProc = require('child_process').exec(`python3 ${script} ${arg}`, function(error, stdout, stderr) {
+    if (error) {
+      throw error
+    }
+    console.log(stdout)
+  })
   if (pyProc != null) {
     console.log('child process success')
   }

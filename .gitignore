@@ -2,6 +2,7 @@
 node_modules
 /dist
 __pycache__/
+06_工作周报/
 
 
 # local env files

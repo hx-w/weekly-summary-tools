@@ -1,0 +1,15 @@
+file_structure:
+  # 脚本运行目录
+  workspace: 06_工作周报
+  # 汇总的目录
+  summary: 06_工作周报/00_汇总
+  # 留空自动获取，否则以指定的group为准
+  group: []
+  template:
+    group_summary: 06_工作周报/模板/通用网格生成软件小组工作周报.xlsx
+    project_summary: 06_工作周报/模板/通用网格生成软件项目工作周报.xlsx
+
+file_prefix: 通用网格生成软件
+group_pattern: ^0.+_.+组$
+week_pattern: \d{4}-\d{4}-\d{4}
+source_sheet: 工作任务项
