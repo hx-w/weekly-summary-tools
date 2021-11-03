@@ -17,6 +17,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      
+      - name: install requirements
+        run: pip3 install -r py/requirements.txt
 
       - name: build windows exe
         uses: JackMcKew/pyinstaller-action-windows@main
