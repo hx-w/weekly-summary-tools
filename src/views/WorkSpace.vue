@@ -7,11 +7,9 @@
       <a-menu-item key="swmg"> <a-icon type="inbox" />单周全组汇总</a-menu-item>
       <a-menu-item key="mw"> <a-icon type="dropbox" />多周汇总</a-menu-item>
     </a-menu>
-    <a-layout-content>
-        <SWSG v-if="summary_model[0] === 'swsg'"/>
-        <SWMG v-else-if="summary_model[0] === 'swmg'"/>
-        <MW v-else-if="summary_model[0] === 'mw'"/>
-    </a-layout-content>
+    <SWSG v-if="summary_model[0] === 'swsg'"/>
+    <SWMG v-else-if="summary_model[0] === 'swmg'"/>
+    <MW v-else-if="summary_model[0] === 'mw'"/>
   </div>
 </template>
 

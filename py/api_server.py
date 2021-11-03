@@ -56,6 +56,13 @@ async def swsg_name_list(group_name: str, week: str):
         lambda x: re.match(file_pattern, x),
         os.listdir(source_dir)
     ))
+    file_list = list(map(
+        lambda x: {
+            'title': re.findall(file_pattern, x)[0],
+            'key': x
+        },
+        file_list
+    ))
     return file_list
 
 
