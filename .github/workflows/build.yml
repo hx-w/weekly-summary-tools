@@ -35,7 +35,6 @@ jobs:
       - name: build electron
         run: |
           npm install
-          npm install ffmpeg
           npm run build:win
 
       - name: upload
