@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "electron:serve": "vue-cli-service electron:serve",
-    "build:win": "electron-packager ./ GOPack --platform=win32 --arch=x64 --out=build/ --asar --extra-resource=./bin/api_server.exe --overwrite --ignore=\"(dist|docs|.gitignore|LICENSE|README.md|config.yml|node_modules)\""
+    "build:win": "electron-packager ./ GOPack --platform=win32 --arch=x64 --out=build/ --asar --extra-resource=./dist/api_server.exe --overwrite --ignore=\"(dist|docs|.gitignore|LICENSE|README.md|config.yml|node_modules)\""
   },
   "main": "./src/background.js",
   "dependencies": {
