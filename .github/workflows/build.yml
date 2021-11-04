@@ -22,12 +22,23 @@ jobs:
         run: |
           pip3 install -r py/requirements.txt
           pip3 install pyinstaller
-          
-      - name: build exe
-        run: pyinstaller -F py/api_server.py
       
+      - name: build py exe
+        run: |
+          pyinstaller -F py/api_server.py
+          mv dist/api_server.exe ./bin/
+      
+      # step2: install node env
+      - name: Install Node.js
+        uses: actions/setup-node@v2-beta
+
+      - name: build electron
+        run: |
+          npm install
+          npm run build:win
+
       - name: upload
         uses: actions/upload-artifact@v2
         with:
-          name: api_server.exe
-          path: dist/api_server.exe
+          name: GOPack.exe
+          path: build/GOPack-win32-x64/GOPack.exe
