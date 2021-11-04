@@ -23,7 +23,7 @@ async function createWindow () {
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
   })
-3
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -83,19 +83,27 @@ if (isDevelopment) {
 const path=require('path')
 
 let pyProc = null
-let pyPort = null
 
 const createPyProc = () => {
-  let port = '4242'
-  let script = path.join('py', 'api_server.py')
-  let arg = path.join('./', 'config.yml')
-  // pyProc = require('child_process').spawn('python', [script, arg])
-  pyProc = require('child_process').exec(`python3 ${script} ${arg}`, function(error, stdout, stderr) {
-    if (error) {
-      throw error
-    }
-    console.log(stdout)
-  })
+  if (isDevelopment) {
+    let script = path.join('py', 'api_server.py')
+    let arg = path.join('./', 'config.yml')
+    pyProc = require('child_process').exec(`python3 ${script} ${arg}`, function(error, stdout, stderr) {
+      if (error) {
+        throw error
+      }
+      console.log(stdout)
+    })
+  } else {
+    let script = path.join('resources', 'api_server.exe')
+    let arg = path.join('../', 'config.yml')
+    pyProc = require('child_process').execFile(`${script} ${arg}`, function(error, stdout, stderr) {
+      if (error) {
+        throw error
+      }
+      console.log(stdout)
+    })
+  }
   if (pyProc != null) {
     console.log('child process success')
   }
@@ -104,7 +112,6 @@ const createPyProc = () => {
 const exitPyProc = () => {
   pyProc.kill()
   pyProc = null
-  pyPort = null
 }
 
 app.on('ready', createPyProc)

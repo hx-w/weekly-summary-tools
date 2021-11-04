@@ -1,4 +1,4 @@
-# scubot-electron
+# weekly-summary-tools
 
 ## Project setup
 ```
