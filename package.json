@@ -10,7 +10,7 @@
     "lint": "vue-cli-service lint",
     "electron:serve": "vue-cli-service electron:serve --mode dev",
     "electron:build": "electron-builder --windows",
-    "electron:pack": "electron-packager ./dist --platform=win32 --arch=x64 --overwrite"
+    "electron:pack": "electron-packager ./ goPack --out=dist/ --win --arch=x64 --overwrite"
   },
   "main": "src/background.js",
   "dependencies": {
