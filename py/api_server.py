@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from config import gconfig
+import scripts
 
 api = FastAPI()
 
@@ -27,21 +28,7 @@ async def group_list():
 @api.get('/info/week_list')
 async def week_list(reverse: bool = True, single_week: bool = True):
     try:
-        weeklist = list(filter(
-            lambda x: re.match(gconfig.week_pattern, x),
-            os.listdir(gconfig.summary)
-        ))
-        weeklist.sort(reverse=reverse)
-        if single_week:
-            return weeklist
-        weeklist = list(filter(
-            lambda x: os.path.exists(
-                os.path.join(os.path.join(gconfig.summary, x),
-                            f'{gconfig.prefix}项目工作周报-{x}.xlsx')
-            ),
-            weeklist
-        ))
-        return weeklist
+        return await scripts.info_week_list(reverse, single_week)
     except Exception as ept:
         raise HTTPException(403, f'{ept}')
 
@@ -55,19 +42,7 @@ async def swsg_name_list(group_name: str, week: str):
     if not os.path.exists(source_dir):
         raise HTTPException(403, '路径不存在')
     try:
-        file_pattern = re.compile(f'{gconfig.prefix}个人工作周报-{week}-(.*?).xlsx')
-        file_list = list(filter(
-            lambda x: re.match(file_pattern, x),
-            os.listdir(source_dir)
-        ))
-        file_list = list(map(
-            lambda x: {
-                'title': re.findall(file_pattern, x)[0],
-                'key': x
-            },
-            file_list
-        ))
-        return file_list
+        return await scripts.swsg_name_list(source_dir, week)
     except Exception as ept:
         raise HTTPException(403, f'{ept}')
 
