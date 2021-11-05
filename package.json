@@ -12,7 +12,7 @@
     "electron:build": "electron-builder --windows",
     "electron:pack": "electron-packager ./ --platform=win32 --arch=x64 --overwrite"
   },
-  "main": "background.js",
+  "main": "src/background.js",
   "dependencies": {
     "ant-design-vue": "^1.7.8",
     "core-js": "^3.6.5",

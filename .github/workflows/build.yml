@@ -32,14 +32,18 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2-beta
 
+      # - name: build electron
+      #   uses: samuelmeuli/action-electron-builder@v1
+      #   with:
+      #     github_token: ${{ secrets.github_token }}
+      #     build_script_name: electron:build
       - name: build electron
-        uses: samuelmeuli/action-electron-builder@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          build_script_name: electron:build
+        run: |
+          npm install
+          npm run electron:pack
 
       - name: upload
         uses: actions/upload-artifact@v2
         with:
-          name: build
-          path: build/
+          name: dist
+          path: dist/
