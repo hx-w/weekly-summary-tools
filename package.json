@@ -3,17 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "electron-builder install-app-deps",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "electron:serve": "vue-cli-service electron:serve --mode dev",
-    "build:win": "electron-packager ./ GOPack --platform=win32 --arch=x64 --out=build/ --arsr --extra-resource=bin/ --ignore=\"(bin|node_modules|config.yml)\" --overwrite --mode prod"
+    "electron:build": "electron-builder --mac --windows --linux"
   },
   "main": "./src/background.js",
   "dependencies": {
     "ant-design-vue": "^1.7.8",
     "core-js": "^3.6.5",
-    "electron-packager": "^15.4.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
@@ -28,6 +28,7 @@
     "axios": "^0.24.0",
     "babel-eslint": "^10.1.0",
     "electron": "^13.0.0",
+    "electron-builder": "^22.13.1",
     "electron-devtools-installer": "^3.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
