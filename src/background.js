@@ -3,10 +3,10 @@ const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const protocol = electron.protocol
-const createProtocol = require('vue-cli-plugin-electron-builder/lib').createProtocol
-const DEVINSTALLER = require('electron-devtools-installer')
-const installExtension = DEVINSTALLER.installExtension
-const VUEJS_DEVTOOLS = DEVINSTALLER.VUEJS_DEVTOOLS
+// const createProtocol = require('vue-cli-plugin-electron-builder/lib').createProtocol
+// const DEVINSTALLER = require('electron-devtools-installer')
+// const installExtension = DEVINSTALLER.installExtension
+// const VUEJS_DEVTOOLS = DEVINSTALLER.VUEJS_DEVTOOLS
 
 // import { app, protocol, BrowserWindow } from 'electron'
 // import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
@@ -37,7 +37,7 @@ async function createWindow () {
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
-    createProtocol('app')
+    // createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
