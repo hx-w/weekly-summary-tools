@@ -11,7 +11,7 @@
     "electron:serve": "vue-cli-service electron:serve --mode dev",
     "electron:build": "electron-builder --windows"
   },
-  "main": "./src/background.js",
+  "main": "background.js",
   "dependencies": {
     "ant-design-vue": "^1.7.8",
     "core-js": "^3.6.5",
