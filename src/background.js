@@ -1,8 +1,16 @@
 'use strict'
+const electron = require('electron')
+const app = electron.app
+const BrowserWindow = electron.BrowserWindow
+const protocol = electron.protocol
+const createProtocol = require('vue-cli-plugin-electron-builder/lib').createProtocol
+const DEVINSTALLER = require('electron-devtools-installer')
+const installExtension = DEVINSTALLER.installExtension
+const VUEJS_DEVTOOLS = DEVINSTALLER.VUEJS_DEVTOOLS
 
-import { app, protocol, BrowserWindow } from 'electron'
-import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+// import { app, protocol, BrowserWindow } from 'electron'
+// import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
+// import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Scheme must be registered before the app is ready
