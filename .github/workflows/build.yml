@@ -36,6 +36,7 @@ jobs:
         uses: samuelmeuli/action-electron-builder@v1
         with:
           github_token: ${{ secrets.github_token }}
+          use_vue_cli: true
           build_script_name: electron:build
 
       - name: upload
