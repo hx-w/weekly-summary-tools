@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "electron:serve": "vue-cli-service electron:serve --mode dev",
-    "electron:build": "electron-builder --mac --windows --linux"
+    "electron:build": "electron-builder --windows"
   },
   "main": "./src/background.js",
   "dependencies": {
