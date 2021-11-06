@@ -8,7 +8,7 @@ const protocol = electron.protocol
 // const installExtension = DEVINSTALLER.installExtension
 // const VUEJS_DEVTOOLS = DEVINSTALLER.VUEJS_DEVTOOLS
 
-const isDevelopment = process.env.NODE_ENV !== 'production'
+const isDevelopment = process.env.NODE_ENV === 'development'
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
