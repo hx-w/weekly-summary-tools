@@ -3,7 +3,6 @@ const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const protocol = electron.protocol
-// const createProtocol = require('vue-cli-plugin-electron-builder/lib').createProtocol
 // const DEVINSTALLER = require('electron-devtools-installer')
 // const installExtension = DEVINSTALLER.installExtension
 // const VUEJS_DEVTOOLS = DEVINSTALLER.VUEJS_DEVTOOLS
@@ -15,7 +14,7 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
-async function createWindow () {
+async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
@@ -28,16 +27,18 @@ async function createWindow () {
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
   })
+  win.loadURL('http://localhost:8080')
 
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
-    // Load the url of the dev server if in development mode
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    if (!process.env.IS_TEST) win.webContents.openDevTools()
-  } else {
-    // createProtocol('app')
-    // Load the index.html when not in development
-    win.loadURL('app://./index.html')
-  }
+  // if (process.env.WEBPACK_DEV_SERVER_URL) {
+  //   // Load the url of the dev server if in development mode
+  //   await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+  //   // Load the index.html when not in development
+  //   if (!process.env.IS_TEST) win.webContents.openDevTools()
+  // } else {
+  //   createProtocol('app')
+  //   // Load the index.html when not in development
+  //   win.loadFile('app://./index.html')
+  // }
 }
 
 // Quit when all windows are closed.
@@ -85,7 +86,7 @@ if (isDevelopment) {
   }
 }
 
-const path=require('path')
+const path = require('path')
 
 let pyProc = null
 
@@ -93,7 +94,7 @@ const createPyProc = () => {
   if (isDevelopment) {
     let script = path.join('py', 'api_server.py')
     let arg = path.join('./', 'config.yml')
-    pyProc = require('child_process').exec(`python3 ${script} ${arg}`, function(error, stdout, stderr) {
+    pyProc = require('child_process').exec(`python3 ${script} ${arg}`, function (error, stdout, stderr) {
       if (error) {
         throw error
       }

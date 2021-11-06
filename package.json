@@ -8,7 +8,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "electron:serve": "cross-env NODE_ENV=development vue-cli-service electron:serve",
+    "electron:serve": "cross-env NODE_ENV=production vue-cli-service electron:serve",
     "electron:build": "cross-env NODE_ENV=production electron-builder --windows",
     "electron:pack": "cross-env NODE_ENV=production electron-packager src/ goPack --out=dist/ --win --arch=x64 --overwrite"
   },
