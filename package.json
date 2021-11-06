@@ -8,9 +8,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "electron:serve": "vue-cli-service electron:serve --mode dev",
-    "electron:build": "electron-builder --windows",
-    "electron:pack": "electron-packager ./ goPack --out=dist/ --win --arch=x64 --overwrite --ignore=\"(node_modules)\""
+    "electron:serve": "cross-env NODE_ENV=development vue-cli-service electron:serve",
+    "electron:build": "cross-env NODE_ENV=production electron-builder --windows",
+    "electron:pack": "cross-env NODE_ENV=production electron-packager src/ goPack --out=dist/ --win --arch=x64 --overwrite"
   },
   "main": "src/background.js",
   "dependencies": {
@@ -29,6 +29,7 @@
     "@vue/eslint-config-standard": "^5.1.2",
     "axios": "^0.24.0",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
     "electron": "^13.0.0",
     "electron-builder": "^22.13.1",
     "electron-devtools-installer": "^3.1.0",
