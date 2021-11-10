@@ -106,7 +106,7 @@ const createPyProc = () => {
   } else {
     let script = path.join('resources', 'api_server.exe')
     // let script = `file://${__dirname}/`
-    let arg = path.join('../', 'config.yml')
+    let arg = 'config.yml'
     pyProc = require('child_process').execFile(`${script} ${arg}`, function(error, stdout, stderr) {
       if (error) {
         throw error
