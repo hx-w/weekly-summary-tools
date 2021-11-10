@@ -4,7 +4,7 @@ module.exports = {
             customFileProtocol: './',
             builderOptions: {
                 directories: {
-                    "output": "build",
+                    "output": "build/",
                 },
                 // asar: false,
                 extraResources: {
