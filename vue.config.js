@@ -3,9 +3,13 @@ module.exports = {
         electronBuilder: {
             customFileProtocol: './',
             builderOptions: {
-                "extraResources":  {
+                directories: {
+                    "output": "build" // 输出文件夹
+                },
+                asar: false,
+                extraResources:  {
                     "from": "./bin/",
-                    "to": "bin"
+                    "to": "../bin"
                 }
             }
         }
