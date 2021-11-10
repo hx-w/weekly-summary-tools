@@ -113,7 +113,7 @@ export default {
   },
   mounted() {
     this.$http
-      .get("http://127.0.0.1:4242/info/group_list")
+      .get("http://127.0.0.1:54321/info/group_list")
       .then((resp) => {
         this.$message.success("获取小组名单成功");
         this.group_loading = false;
@@ -127,7 +127,7 @@ export default {
       });
 
     this.$http
-      .get("http://127.0.0.1:4242/info/week_list", {
+      .get("http://127.0.0.1:54321/info/week_list", {
         params: {
           reverse: true,
           single_week: true,
@@ -163,7 +163,7 @@ export default {
     getNameList(group, week) {
       if (!this.week_loading && !this.group_loading) {
         this.$http
-          .get("http://127.0.0.1:4242/swsg/name_list", {
+          .get("http://127.0.0.1:54321/swsg/name_list", {
             params: {
               group_name: group,
               week: week,
