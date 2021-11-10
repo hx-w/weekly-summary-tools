@@ -31,16 +31,18 @@ jobs:
       # step2: install node env
       - name: Install Node.js
         uses: actions/setup-node@v2-beta
-
-      - name: build electron
-        uses: samuelmeuli/action-electron-builder@v1
         with:
-          github_token: ${{ secrets.github_token }}
-          build_script_name: electron:build
+          node-version: 17.0.1
+
       # - name: build electron
-      #   run: |
-      #     npm install
-      #     npm run electron:build
+        # uses: samuelmeuli/action-electron-builder@v1
+        # with:
+        #   github_token: ${{ secrets.github_token }}
+        #   build_script_name: electron:build
+      - name: build electron
+        run: |
+          npm install
+          npm run electron:build
 
       - name: upload
         uses: actions/upload-artifact@v2
