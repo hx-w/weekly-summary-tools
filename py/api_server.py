@@ -2,7 +2,6 @@
 
 import os
 import sys
-import re
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -50,5 +49,7 @@ async def swsg_name_list(group_name: str, week: str):
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         raise Exception('arg number wrong')
+    if scripts.check_port_in_use(54321):
+        raise Exception('port 54321 in use')
     gconfig.load_config(sys.argv[1])
-    uvicorn.run(api, host='127.0.0.1', port=4242)
+    uvicorn.run(api, host='127.0.0.1', port=54321)

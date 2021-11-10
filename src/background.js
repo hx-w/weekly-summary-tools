@@ -120,9 +120,12 @@ const createPyProc = () => {
 }
 
 const exitPyProc = () => {
-  pyProc.kill()
+  if (pyProc !== null) {
+    pyProc.kill()
+  }
   pyProc = null
 }
 
 app.on('ready', createPyProc)
 app.on('will-quit', exitPyProc)
+app.on('before-quit', exitPyProc)
