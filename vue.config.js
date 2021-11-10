@@ -8,10 +8,6 @@ module.exports = {
                     "buildResources": "bin"
                 },
                 asar: false,
-                files: [
-                    "./build/**/*",
-                    "package.json"
-                ],
                 extraResources: {
                     "from": "./bin/",
                     "to": "../bin"

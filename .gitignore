@@ -3,7 +3,7 @@ node_modules
 /dist
 __pycache__/
 06_工作周报/
-
+/build
 
 # local env files
 .env.local
