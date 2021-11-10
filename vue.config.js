@@ -4,10 +4,15 @@ module.exports = {
             customFileProtocol: './',
             builderOptions: {
                 directories: {
-                    "output": "build" // 输出文件夹
+                    "output": "build",
+                    "buildResources": "bin"
                 },
                 asar: false,
-                extraResources:  {
+                files: [
+                    "./build/**/*",
+                    "package.json"
+                ],
+                extraResources: {
                     "from": "./bin/",
                     "to": "../bin"
                 },
