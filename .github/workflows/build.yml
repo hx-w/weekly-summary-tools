@@ -40,10 +40,10 @@ jobs:
       - name: build electron
         run: |
           npm install
-          npm run electron:pack
+          npm run electron:build
 
       - name: upload
         uses: actions/upload-artifact@v2
         with:
           name: dist
-          path: dist/
+          path: dist_electron/

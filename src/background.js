@@ -1,8 +1,10 @@
 'use strict'
-const electron = require('electron')
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
-const protocol = electron.protocol
+// const electron = require('electron')
+// const app = electron.app
+// const BrowserWindow = electron.BrowserWindow
+// const protocol = electron.protocol
+import { app, protocol, BrowserWindow } from "electron";
+import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 // const DEVINSTALLER = require('electron-devtools-installer')
 // const installExtension = DEVINSTALLER.installExtension
 // const VUEJS_DEVTOOLS = DEVINSTALLER.VUEJS_DEVTOOLS
@@ -27,18 +29,19 @@ async function createWindow() {
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
   })
-  win.loadURL('http://localhost:8080')
 
-  // if (process.env.WEBPACK_DEV_SERVER_URL) {
-  //   // Load the url of the dev server if in development mode
-  //   await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-  //   // Load the index.html when not in development
-  //   if (!process.env.IS_TEST) win.webContents.openDevTools()
-  // } else {
-  //   createProtocol('app')
-  //   // Load the index.html when not in development
-  //   win.loadFile('app://./index.html')
-  // }
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
+    // Load the url of the dev server if in development mode
+    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    if (!process.env.IS_TEST) win.webContents.openDevTools()
+  } else {
+    createProtocol('app')
+    // Load the index.html when not in development
+    // win.loadFile('app://./index.html')
+    // path = require('path')
+    // win.loadFile(path.join(__dirname, 'index.html'))
+    win.loadURL(`file://${__dirname}/index.html`)
+  }
 }
 
 // Quit when all windows are closed.
@@ -101,17 +104,17 @@ const createPyProc = () => {
       console.log(stdout)
     })
   } else {
-    // let script = path.join('resources', 'api_server.exe')
-    // let arg = path.join('../', 'config.yml')
-    // pyProc = require('child_process').execFile(`${script} ${arg}`, function(error, stdout, stderr) {
-    //   if (error) {
-    //     throw error
-    //   }
-    //   console.log(stdout)
-    // })
-  }
-  if (pyProc != null) {
-    console.log('child process success')
+  //   let script = path.join('resources', 'api_server.exe')
+  //   let arg = path.join('../', 'config.yml')
+  //   pyProc = require('child_process').execFile(`${script} ${arg}`, function(error, stdout, stderr) {
+  //     if (error) {
+  //       throw error
+  //     }
+  //     console.log(stdout)
+  //   })
+  // }
+  // if (pyProc != null) {
+  //   console.log('child process success')
   }
 }
 
