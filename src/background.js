@@ -42,7 +42,14 @@ async function createWindow() {
     // win.loadFile(path.join(__dirname, 'index.html'))
     win.loadURL(`file://${__dirname}/index.html`)
   }
+  win.on('close', () => {
+    if (process.platform !== 'darwin') {
+      app.quit()
+      win.quit()
+    }
+  })
 }
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
