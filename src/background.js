@@ -104,17 +104,18 @@ const createPyProc = () => {
       console.log(stdout)
     })
   } else {
-  //   let script = path.join('resources', 'api_server.exe')
-  //   let arg = path.join('../', 'config.yml')
-  //   pyProc = require('child_process').execFile(`${script} ${arg}`, function(error, stdout, stderr) {
-  //     if (error) {
-  //       throw error
-  //     }
-  //     console.log(stdout)
-  //   })
-  // }
-  // if (pyProc != null) {
-  //   console.log('child process success')
+    let script = path.join('resources', 'api_server.exe')
+    // let script = `file://${__dirname}/`
+    let arg = path.join('../', 'config.yml')
+    pyProc = require('child_process').execFile(`${script} ${arg}`, function(error, stdout, stderr) {
+      if (error) {
+        throw error
+      }
+      console.log(stdout)
+    })
+  }
+  if (pyProc != null) {
+    console.log('child process success')
   }
 }
 
