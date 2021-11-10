@@ -46,7 +46,7 @@ jobs:
       - name: build py exe
         run: |
           pyinstaller -F py/api_server.py
-          cp ./dist/api_server.exe ./bin
+          cp ./dist/api_server.exe ./public/
       
       # step2: install node env
       - name: Install Node.js
