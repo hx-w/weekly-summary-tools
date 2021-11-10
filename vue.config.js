@@ -10,6 +10,9 @@ module.exports = {
                 extraResources:  {
                     "from": "./bin/",
                     "to": "../bin"
+                },
+                win: {
+                    target: "dir"
                 }
             }
         }
