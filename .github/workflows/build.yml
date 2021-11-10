@@ -26,7 +26,7 @@ jobs:
       - name: build py exe
         run: |
           pyinstaller -F py/api_server.py
-          cp .\dist\api_server.exe .\bin
+          cp ./dist/api_server.exe ./bin
       
       # step2: install node env
       - name: Install Node.js
@@ -49,4 +49,4 @@ jobs:
         with:
           name: build
           path: |
-            build/
+            build/win-unpacked
