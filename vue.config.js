@@ -7,10 +7,10 @@ module.exports = {
                     "output": "build",
                     "buildResources": "bin"
                 },
-                asar: false,
+                // asar: false,
                 extraResources: {
                     "from": "./bin/",
-                    "to": "../bin"
+                    "to": "bin"
                 },
                 win: {
                     target: "dir"
