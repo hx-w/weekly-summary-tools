@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import socket
 import re
 import os
 import shutil
@@ -9,6 +10,7 @@ from config import gconfig
 
 align = openpyxl.styles.Alignment(
     horizontal='left', vertical='center', wrap_text=False)
+
 
 async def __exec(source_dir: str, file_list: list, dist_file: str, template_file: str, newcol_pattern: re.Pattern = None):
     shutil.copyfile(template_file, dist_file)
@@ -23,7 +25,8 @@ async def __exec(source_dir: str, file_list: list, dist_file: str, template_file
             break
     total_order = 1
     for eachfile in file_list:
-        newcol = re.findall(newcol_pattern, eachfile)[0] if newcol_pattern else None
+        newcol = re.findall(newcol_pattern, eachfile)[
+            0] if newcol_pattern else None
         full_path = os.path.join(source_dir, eachfile)
         source_sheet = openpyxl.load_workbook(
             full_path, read_only=True)['工作任务项']
@@ -59,9 +62,9 @@ async def __exec(source_dir: str, file_list: list, dist_file: str, template_file
             boundary = f'A1:{chr(ord("A") + dist_sheet.max_column - 1)}{dist_sheet.max_row}'
             pivot.cache.cacheSource.worksheetSource.ref = boundary
             pivot.cache.refreshOnLoad = True  # 刷新加载
-        except: pass
+        except:
+            pass
     dist_book.save(dist_file)
-
 
 
 async def info_week_list(reverse: bool, single_week: bool) -> list:
@@ -80,6 +83,7 @@ async def info_week_list(reverse: bool, single_week: bool) -> list:
         weeklist
     ))
     return weeklist
+
 
 async def swmg_group_list(week: str) -> list:
     source_dir = os.path.join(gconfig.summary, week)
@@ -100,7 +104,6 @@ async def swmg_group_list(week: str) -> list:
         lambda x: x[3:] not in [z['title'] for z in file_list],
         gconfig.group
     ))
-    print(disabled_group)
     for dis in disabled_group:
         file_list.append({
             'title': dis[3:],
@@ -108,6 +111,7 @@ async def swmg_group_list(week: str) -> list:
             'disabled': True
         })
     return file_list
+
 
 async def swmg_exec_merge(week: str, filelist: list, force: bool = False) -> tuple:
     source_dir = os.path.join(gconfig.summary, week)
@@ -143,10 +147,6 @@ async def swsg_exec_merge(group_name: str, week: str, filelist: list, force: boo
         gconfig.workspace, os.path.join(group_name, week)
     )
     pattern = re.compile(f'{gconfig.prefix}个人工作周报-{week}-(.*).xlsx')
-    # filelist = list(filter(
-    #     lambda x: re.match(pattern, x),
-    #     os.listdir(source_dir)
-    # ))
     dist_dir = os.path.join(gconfig.summary, week)
     if not os.path.exists(dist_dir):
         os.makedirs(dist_dir)
@@ -154,18 +154,14 @@ async def swsg_exec_merge(group_name: str, week: str, filelist: list, force: boo
         dist_dir,
         f'{gconfig.prefix}小组工作周报-{week}-{group_name[3:]}.xlsx'
     )
-    # backup
     if not force and os.path.exists(dist_path):
         return False, dist_path
-    # cp template
     try:
         await __exec(source_dir, filelist, dist_path, gconfig.template_group, pattern)
         return True, dist_path
     except Exception as ept:
         return False, f'{ept}'
 
-
-import socket
 
 def check_port_in_use(port, host='127.0.0.1'):
     s = None

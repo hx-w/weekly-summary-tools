@@ -87,7 +87,7 @@
     >
       <span v-html="ModalText">{{ ModalText }}</span>
     </a-modal>
-    <br/>
+    <br />
   </div>
 </template>
 
@@ -128,7 +128,7 @@ export default {
         } else {
           this.btn_disable = true;
         }
-        this.getNameList(this.current_week);
+        this.getGroupList(this.current_week);
       })
       .catch((error) => {
         this.btn_disable = true;
@@ -162,7 +162,9 @@ export default {
               content: (
                 <div>
                   <p>文件合并在</p>
-                  <p><strong>{ this.distpath }</strong></p>
+                  <p>
+                    <strong>{this.distpath}</strong>
+                  </p>
                   <p>请及时交验</p>
                 </div>
               ),
@@ -186,7 +188,7 @@ export default {
     },
     weekChange(value) {
       this.current_week = value;
-      this.getNameList(this.current_week);
+      this.getGroupList(this.current_week);
     },
     filterOption(inputValue, option) {
       return option.title.indexOf(inputValue) > -1;
@@ -197,7 +199,7 @@ export default {
     changeShowSearch(checked) {
       this.show_search = checked;
     },
-    getNameList(week) {
+    getGroupList(week) {
       if (!this.week_loading) {
         this.$http
           .get(`${apihost}/swmg/group_list`, {
@@ -206,10 +208,12 @@ export default {
             },
           })
           .then((resp) => {
-            console.log(this.group_list)
+            console.log(this.group_list);
             this.group_list = resp.data;
-            this.target_list = this.group_list.filter((item) => !item.disabled).map((item) => item.key);
-            this.btn_disable = (resp.data.length === 0);
+            this.target_list = this.group_list
+              .filter((item) => !item.disabled)
+              .map((item) => item.key);
+            this.btn_disable = this.target_list.length === 0;
           })
           .catch((error) => {
             this.group_list = [];
@@ -223,7 +227,7 @@ export default {
             }
           });
       }
-    }
+    },
   },
 };
 </script>
