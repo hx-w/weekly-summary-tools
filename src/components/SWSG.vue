@@ -52,7 +52,7 @@
             </a-select>
           </a-form-item>
           <a-row justify="center" type="flex">
-            <a-form-item :wrapperCol="{ offset:0 }">
+            <a-form-item :wrapperCol="{ offset: 0 }">
               <a-transfer
                 :data-source="name_list"
                 :target-keys="target_list"
@@ -75,7 +75,7 @@
               <a-switch
                 size="small"
                 checked-children="搜索框开启"
-                style="float:left; margin-top:10px"
+                style="float: left; margin-top: 10px"
                 un-checked-children="搜索框关闭"
                 default-unchecked
                 @change="changeShowSearch"
@@ -84,17 +84,38 @@
           </a-row>
           <a-row type="flex" justify="center">
             <a-col :span="12">
-            <a-button type="primary" @click="swsgSubmit" icon="branches" style="width:110px"> 执行合并 </a-button>
+              <a-button
+                type="primary"
+                @click="swsgSubmit"
+                icon="branches"
+                style="width: 110px"
+                :disabled="btn_disable"
+              >
+                执行合并
+              </a-button>
             </a-col>
           </a-row>
         </a-form>
       </a-col>
     </a-row>
-    <br/>
+    <a-modal
+      title="文件已存在"
+      :visible="warn_visible"
+      @ok="handleWarnOk"
+      @cancel="handleWarnCancel"
+      okText="确定覆盖"
+      okType="danger"
+      cancelText="取消执行"
+    >
+      <span v-html="ModalText">{{ ModalText }}</span>
+    </a-modal>
+    <br />
   </div>
 </template>
 
 <script>
+const apihost = "http://localhost:54321";
+
 export default {
   name: "SWSG",
   data() {
@@ -109,25 +130,33 @@ export default {
       group_loading: true,
       week_loading: true,
       show_search: false,
+      warn_visible: false,
+      distpath: "",
+      ModalText: "",
+      btn_disable: false,
     };
   },
   mounted() {
     this.$http
-      .get("http://127.0.0.1:54321/info/group_list")
+      .get(`${apihost}/info/group_list`)
       .then((resp) => {
         this.$message.success("获取小组名单成功");
         this.group_loading = false;
         this.group_list = resp.data;
         if (this.group_list.length > 0) {
           this.current_group_name = this.group_list[0];
+          this.btn_disbale = false;
+        } else {
+          this.btn_disable = true;
         }
       })
       .catch((error) => {
         this.$message.error(`获取小组名单失败：${error}`);
+        this.btn_disable = true;
       });
 
     this.$http
-      .get("http://127.0.0.1:54321/info/week_list", {
+      .get(`${apihost}/info/week_list`, {
         params: {
           reverse: true,
           single_week: true,
@@ -138,16 +167,65 @@ export default {
         this.week_list = resp.data;
         if (this.week_list.length > 0) {
           this.current_week = this.week_list[0];
+          this.btn_disable = false;
+        } else {
+          this.btn_disable = true;
         }
         this.getNameList(this.current_group_name, this.current_week);
       })
       .catch((error) => {
+        this.btn_disable = true;
         this.$message.error(`获取周次失败：${error}`);
       });
   },
   methods: {
+    handleWarnOk(e) {
+      this.warn_visible = false;
+      this.execMerge(true);
+    },
+    handleWarnCancel(e) {
+      this.warn_visible = false;
+    },
+    execMerge(force) {
+      this.$http
+        .get(`${apihost}/swsg/exec_merge`, {
+          params: {
+            group_name: this.current_group_name,
+            week: this.current_week,
+            force: force,
+          },
+        })
+        .then((resp) => {
+          this.distpath = resp.data.res;
+          this.ModalText = `<div><strong>${this.distpath}</strong>已存在<br />继续执行将会覆盖原文件，是否继续？</div>`;
+          if (resp.data.success) {
+            this.$success({
+              title: "周报合并成功",
+              // JSX support
+              content: (
+                <div>
+                  <p>周报文件合并在</p>
+                  <p><strong>{ this.distpath }</strong></p>
+                  <p>请及时交验</p>
+                </div>
+              ),
+            });
+          } else {
+            this.warn_visible = true;
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            this.$message.error(
+              `执行合并文件失败：${error.response.data.detail}`
+            );
+          } else {
+            this.$message.error(`执行合并文件失败：${error.response}`);
+          }
+        });
+    },
     swsgSubmit() {
-      console.log('??')
+      this.execMerge(false);
     },
     groupChange(value) {
       this.current_group_name = value;
@@ -163,7 +241,7 @@ export default {
     getNameList(group, week) {
       if (!this.week_loading && !this.group_loading) {
         this.$http
-          .get("http://127.0.0.1:54321/swsg/name_list", {
+          .get(`${apihost}/swsg/name_list`, {
             params: {
               group_name: group,
               week: week,
@@ -173,9 +251,11 @@ export default {
             this.name_list = resp.data;
             console.log(resp.data);
             this.target_list = this.name_list.map((item) => item.key);
+            this.btn_disable = (resp.data.length === 0);
           })
           .catch((error) => {
             this.name_list = [];
+            this.btn_disable = true;
             if (error.response.status === 403) {
               this.$message.error(
                 `获取成员名单失败：${error.response.data.detail}`

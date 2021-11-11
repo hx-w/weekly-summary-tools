@@ -44,9 +44,9 @@ async def swsg_name_list(source_dir: str, week: str) -> list:
     return file_list
 
 
-async def swsg_exec_merge(group_name: str, week: str, backup: bool = False) -> str:
+async def swsg_exec_merge(group_name: str, week: str, force: bool = False) -> tuple:
     source_dir = os.path.join(
-        '.', os.path.join(group_name, week)
+        gconfig.workspace, os.path.join(group_name, week)
     )
     pattern = re.compile(f'{gconfig.prefix}个人工作周报-{week}-(.*).xlsx')
     filelist = list(filter(
@@ -61,8 +61,8 @@ async def swsg_exec_merge(group_name: str, week: str, backup: bool = False) -> s
         f'{gconfig.prefix}小组工作周报-{week}-{group_name[3:]}.xlsx'
     )
     # backup
-    if backup and os.path.exists(dist_path):
-        os.rename(dist_path, dist_path + '.bak')
+    if os.path.exists(dist_path) and not force:
+        return False, dist_path
     # cp template
     shutil.copyfile(gconfig.template_group, dist_path)
 
@@ -118,7 +118,7 @@ async def swsg_exec_merge(group_name: str, week: str, backup: bool = False) -> s
 
     dist_book.save(dist_path)
 
-    return dist_path
+    return True, dist_path
 
 
 import socket

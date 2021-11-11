@@ -21,8 +21,9 @@ async function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 690,
+    frame: false,
+    titleBarStyle: 'hidden',
     webPreferences: {
-
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security3html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
@@ -137,3 +138,4 @@ const exitPyProc = () => {
 app.on('ready', createPyProc)
 app.on('will-quit', exitPyProc)
 app.on('before-quit', exitPyProc)
+app.on('window-all-closed', exitPyProc)

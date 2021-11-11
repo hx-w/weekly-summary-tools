@@ -45,6 +45,14 @@ async def swsg_name_list(group_name: str, week: str):
     except Exception as ept:
         raise HTTPException(403, f'{ept}')
 
+@api.get('/swsg/exec_merge')
+async def swsg_exec_merge(group_name: str, week: str, force: bool = False):
+    try:
+        success, res = await scripts.swsg_exec_merge(group_name, week, force)
+        return {'success': success, 'res': res}
+    except Exception as ept:
+        raise HTTPException(403, f'{ept}')
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
