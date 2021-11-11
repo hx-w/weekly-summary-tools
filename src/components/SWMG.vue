@@ -42,7 +42,7 @@
                 :operations="['右移', '左移']"
                 :list-style="{
                   width: '210px',
-                  height: '220px',
+                  height: '261px',
                 }"
                 :locale="{
                   itemUnit: '组',
@@ -87,8 +87,6 @@
     >
       <span v-html="ModalText">{{ ModalText }}</span>
     </a-modal>
-    <br/>
-    <br/>
     <br/>
   </div>
 </template>
@@ -208,9 +206,9 @@ export default {
             },
           })
           .then((resp) => {
+            console.log(this.group_list)
             this.group_list = resp.data;
-            this.target_list = this.group_list.map((item) => item.key);
-            console.log(this.target_list)
+            this.target_list = this.group_list.filter((item) => !item.disabled).map((item) => item.key);
             this.btn_disable = (resp.data.length === 0);
           })
           .catch((error) => {

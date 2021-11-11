@@ -61,6 +61,15 @@ async def swmg_group_list(week: str):
     except Exception as ept:
         raise HTTPException(403, f'{ept}')
 
+@api.get('/swmg/exec_merge')
+async def swmg_exec_merge(week: str, filelist: str, force: bool = False):
+    try:
+        success, res = await scripts.swmg_exec_merge(week, json.loads(filelist), force)
+        return {'success': success, 'res': res}
+    except Exception as ept:
+        raise HTTPException(403, f'{ept}')
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         raise Exception('arg number wrong')

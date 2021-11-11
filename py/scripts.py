@@ -91,13 +91,35 @@ async def swmg_group_list(week: str) -> list:
     file_list = list(map(
         lambda x: {
             'title': re.findall(file_pattern, x)[0],
-            'key': x
+            'key': x,
+            'disabled': False
         },
         file_list
     ))
+    disabled_group = list(filter(
+        lambda x: x[3:] not in [z['title'] for z in file_list],
+        gconfig.group
+    ))
+    print(disabled_group)
+    for dis in disabled_group:
+        file_list.append({
+            'title': dis[3:],
+            'key': dis,
+            'disabled': True
+        })
     return file_list
 
-
+async def swmg_exec_merge(week: str, filelist: list, force: bool = False) -> tuple:
+    source_dir = os.path.join(gconfig.summary, week)
+    pattern = re.compile(f'{gconfig.prefix}小组工作周报-{week}-(.*?).xlsx')
+    dist_path = os.path.join(source_dir, f'{gconfig.prefix}小组工作周报-{week}.xlsx')
+    if not force and os.path.exists(dist_path):
+        return False, dist_path
+    try:
+        await __exec(source_dir, filelist, dist_path, gconfig.template_project, pattern)
+        return True, dist_path
+    except Exception as ept:
+        return False, f'{ept}'
 
 
 async def swsg_name_list(source_dir: str, week: str) -> list:
@@ -133,7 +155,7 @@ async def swsg_exec_merge(group_name: str, week: str, filelist: list, force: boo
         f'{gconfig.prefix}小组工作周报-{week}-{group_name[3:]}.xlsx'
     )
     # backup
-    if os.path.exists(dist_path) and not force:
+    if not force and os.path.exists(dist_path):
         return False, dist_path
     # cp template
     try:
@@ -141,7 +163,6 @@ async def swsg_exec_merge(group_name: str, week: str, filelist: list, force: boo
         return True, dist_path
     except Exception as ept:
         return False, f'{ept}'
-
 
 
 import socket
