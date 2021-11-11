@@ -25,12 +25,12 @@
                   mode="week"
                   :value="start_week"
                   style="width: 100%"
-                  @change="weekChange"
+                  @change="startWeekChange"
                   :loading="week_loading"
                 >
-                  <a-icon slot="suffixIcon" type="calendar" />
+                  <a-icon slot="suffixIcon" type="rise" />
                   <a-select-option
-                    v-for="week in week_list"
+                    v-for="week in start_week_list"
                     :key="week"
                     :value="week"
                   >
@@ -39,10 +39,15 @@
                 </a-select>
               </a-form-item>
             </a-row>
-            <a-row justify="start" align="top">
+            <a-row justify="start" align="bottom">
               <a-form-item label="结束周次" :labelCol="{ span: 6, offset: 0 }">
-                <a-select mode="week" :value="end_week" style="width: 100%">
-                  <a-icon slot="suffixIcon" type="calendar" />
+                <a-select
+                  mode="week"
+                  :value="end_week"
+                  style="width: 100%"
+                  @change="endWeekChange"
+                >
+                  <a-icon slot="suffixIcon" type="fall" />
                   <a-select-option
                     v-for="week in end_week_list"
                     :key="week"
@@ -97,9 +102,12 @@ export default {
     return {
       mwForm: this.$form.createForm(this, { name: "mwForm" }),
       week_list: [],
+      start_week_list: [],
       end_week_list: [],
       start_week: "",
       end_week: "",
+      start_week_idx: 0,
+      end_week_idx: 0,
       week_loading: true,
       warn_visible: false,
       distpath: "",
@@ -111,14 +119,21 @@ export default {
     this.$http
       .get(`${apihost}/info/week_list`, {
         params: {
-          reverse: true,
-          single_week: true,
+          reverse: false,
+          single_week: false,
         },
       })
       .then((resp) => {
         this.week_loading = false;
         this.week_list = resp.data;
         if (this.week_list.length > 0) {
+          this.start_week_list = JSON.parse(JSON.stringify(this.week_list));
+          this.end_week_list = JSON.parse(JSON.stringify(this.week_list));
+          this.end_week_list.reverse();
+          this.start_week = this.start_week_list[0];
+          this.end_week = this.end_week_list[0];
+          this.start_week_idx = 0;
+          this.end_week_idx = this.week_list.length - 1;
           this.btn_disable = false;
         } else {
           this.btn_disable = true;
@@ -130,7 +145,31 @@ export default {
       });
   },
   methods: {
-    weekChange(value) {},
+    startWeekChange(value) {
+      this.start_week = value;
+      this.start_week_idx = this.week_list.indexOf(value);
+      if (this.end_week_idx < this.start_week_idx) {
+        this.end_week_idx = this.start_week_idx;
+        this.end_week = this.week_list[this.end_week_idx];
+      }
+      this.end_week_list = JSON.parse(JSON.stringify(this.week_list));
+      this.end_week_list.reverse();
+      if (this.start_week_idx > 0) {
+        this.end_week_list = this.end_week_list.slice(0, -this.start_week_idx);
+      }
+    },
+    endWeekChange(value) {
+      this.end_week = value;
+      this.end_week_idx = this.week_list.indexOf(value);
+      if (this.end_week_idx < this.start_week_idx) {
+        this.start_week_idx = this.end_week_idx;
+        this.start_week = this.week_list[this.start_week_idx];
+      }
+      this.start_week_list = JSON.parse(JSON.stringify(this.week_list));
+      if (this.end_week_idx >= 0) {
+        this.start_week_list = this.start_week_list.slice(0, this.end_week_idx + 1);
+      }
+    },
     handleWarnOk(e) {
       this.warn_visible = false;
       this.execMerge(true);

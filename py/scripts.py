@@ -78,7 +78,7 @@ async def info_week_list(reverse: bool, single_week: bool) -> list:
     weeklist = list(filter(
         lambda x: os.path.exists(
             os.path.join(os.path.join(gconfig.summary, x),
-                         f'{gconfig.prefix}项目工作周报-{x}.xlsx')
+            f'{gconfig.prefix}小组工作周报-{x}.xlsx')
         ),
         weeklist
     ))
