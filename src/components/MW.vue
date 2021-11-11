@@ -5,33 +5,73 @@
     </a-row>
 
     <a-row justify="center" type="flex" style="margin-top: 10px">
-      <a-col :span="18">
-        <a-form
-          :model="mwForm"
-          :wrapper-col="{ span: 17, offset: 0 }"
-          labelAlign="left"
-        >
-          <!-- <a-form-item label="选择周次" :labelCol="{ span: 3, offset: 2 }">
-          </a-form-item>
-          <a-row justify="center" type="flex">
-            <a-form-item :wrapperCol="{ offset: 0 }">
-            </a-form-item>
-          </a-row> -->
-          <a-row type="flex" justify="center">
-            <a-col :span="12">
-              <a-button
-                type="primary"
-                @click="mwSubmit"
-                icon="branches"
-                style="width: 110px"
-                :disabled="btn_disable"
-              >
-                执行合并
-              </a-button>
-            </a-col>
-          </a-row>
-        </a-form>
-      </a-col>
+      <!-- <a-col :span="18"> -->
+      <a-form
+        :model="mwForm"
+        :wrapper-col="{ span: 18, offset: 0 }"
+        labelAlign="left"
+        style="width: 500px"
+      >
+        <a-row type="flex" justify="center" align="middle">
+          <a-col :flex="1">
+            <div style="display: inline-block; height: 200px; marginleft: 10px">
+              <a-slider vertical range :default-value="[30, 45]" />
+            </div>
+          </a-col>
+          <a-col :flex="2">
+            <a-row justify="start" align="top">
+              <a-form-item label="开始周次" :labelCol="{ span: 6, offset: 0 }">
+                <a-select
+                  mode="week"
+                  :value="start_week"
+                  style="width: 100%"
+                  @change="weekChange"
+                  :loading="week_loading"
+                >
+                  <a-icon slot="suffixIcon" type="calendar" />
+                  <a-select-option
+                    v-for="week in week_list"
+                    :key="week"
+                    :value="week"
+                  >
+                    {{ week }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-row>
+            <a-row justify="start" align="top">
+              <a-form-item label="结束周次" :labelCol="{ span: 6, offset: 0 }">
+                <a-select mode="week" :value="end_week" style="width: 100%">
+                  <a-icon slot="suffixIcon" type="calendar" />
+                  <a-select-option
+                    v-for="week in end_week_list"
+                    :key="week"
+                    :value="week"
+                  >
+                    {{ week }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-row>
+          </a-col>
+          <a-col :flex="1"> </a-col>
+          <!-- </div> -->
+        </a-row>
+        <a-row type="flex" justify="center" align="middle">
+          <a-col :span="12">
+            <a-button
+              type="primary"
+              @click="mwSubmit"
+              icon="branches"
+              style="width: 110px"
+              :disabled="btn_disable"
+            >
+              执行合并
+            </a-button>
+          </a-col>
+        </a-row>
+      </a-form>
+      <!-- </a-col> -->
     </a-row>
     <a-modal
       title="文件已存在"
@@ -57,6 +97,9 @@ export default {
     return {
       mwForm: this.$form.createForm(this, { name: "mwForm" }),
       week_list: [],
+      end_week_list: [],
+      start_week: "",
+      end_week: "",
       week_loading: true,
       warn_visible: false,
       distpath: "",
@@ -87,6 +130,7 @@ export default {
       });
   },
   methods: {
+    weekChange(value) {},
     handleWarnOk(e) {
       this.warn_visible = false;
       this.execMerge(true);
