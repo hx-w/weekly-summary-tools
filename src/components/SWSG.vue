@@ -18,7 +18,7 @@
           >
             <a-select
               mode="group_name"
-              :value="current_group_name"
+              :value="current_group_name.slice(3,)"
               style="width: 100%"
               @change="groupChange"
               :loading="group_loading"
@@ -29,7 +29,7 @@
                 :key="group_name"
                 :value="group_name"
               >
-                {{ group_name }}
+                {{ group_name.slice(3,) }}
               </a-select-option>
             </a-select>
           </a-form-item>

@@ -14,13 +14,13 @@
       >
         <a-row type="flex" justify="center" align="middle">
           <a-col :flex="1">
-            <div style="display: inline-block; height: 200px; marginleft: 10px">
-              <a-slider vertical range :default-value="[30, 45]" />
+            <div style="display: inline-block; height: 250px; marginleft: 0px">
+              <a-slider vertical range :default-value="[0, 100]" />
             </div>
           </a-col>
-          <a-col :flex="2">
-            <a-row justify="start" align="top">
-              <a-form-item label="开始周次" :labelCol="{ span: 6, offset: 0 }">
+          <a-col :flex="2" style="height: 250px">
+            <a-row justify="start" align="top" style="margin-top: 0px">
+              <a-form-item label="开始周次" :labelCol="{ span: 5, offset: 0 }" :wrapperCol="{ span: 12, offset: 0 }">
                 <a-select
                   mode="week"
                   :value="start_week"
@@ -39,12 +39,12 @@
                 </a-select>
               </a-form-item>
             </a-row>
-            <a-row justify="start" align="bottom">
-              <a-form-item label="结束周次" :labelCol="{ span: 6, offset: 0 }">
+            <a-row justify="start" align="bottom" style="margin-bottom: 0px">
+              <a-form-item label="结束周次" :labelCol="{ span: 5, offset: 0 }" :wrapperCol="{ span: 12, offset: 0 }">
                 <a-select
                   mode="week"
                   :value="end_week"
-                  style="width: 100%"
+                  style="width: 100%;"
                   @change="endWeekChange"
                 >
                   <a-icon slot="suffixIcon" type="fall" />
@@ -59,7 +59,7 @@
               </a-form-item>
             </a-row>
           </a-col>
-          <a-col :flex="1"> </a-col>
+          <!-- <a-col :flex="1"> </a-col> -->
           <!-- </div> -->
         </a-row>
         <a-row type="flex" justify="center" align="middle">
