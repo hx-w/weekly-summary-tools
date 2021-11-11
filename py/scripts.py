@@ -44,15 +44,15 @@ async def swsg_name_list(source_dir: str, week: str) -> list:
     return file_list
 
 
-async def swsg_exec_merge(group_name: str, week: str, force: bool = False) -> tuple:
+async def swsg_exec_merge(group_name: str, week: str, filelist: list, force: bool = False) -> tuple:
     source_dir = os.path.join(
         gconfig.workspace, os.path.join(group_name, week)
     )
     pattern = re.compile(f'{gconfig.prefix}个人工作周报-{week}-(.*).xlsx')
-    filelist = list(filter(
-        lambda x: re.match(pattern, x),
-        os.listdir(source_dir)
-    ))
+    # filelist = list(filter(
+    #     lambda x: re.match(pattern, x),
+    #     os.listdir(source_dir)
+    # ))
     dist_dir = os.path.join(gconfig.summary, week)
     if not os.path.exists(dist_dir):
         os.makedirs(dist_dir)

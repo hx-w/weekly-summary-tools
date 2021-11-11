@@ -2,6 +2,7 @@
 
 import os
 import sys
+import json
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -46,9 +47,9 @@ async def swsg_name_list(group_name: str, week: str):
         raise HTTPException(403, f'{ept}')
 
 @api.get('/swsg/exec_merge')
-async def swsg_exec_merge(group_name: str, week: str, force: bool = False):
+async def swsg_exec_merge(group_name: str, week: str, filelist: str, force: bool = False):
     try:
-        success, res = await scripts.swsg_exec_merge(group_name, week, force)
+        success, res = await scripts.swsg_exec_merge(group_name, week, json.loads(filelist), force)
         return {'success': success, 'res': res}
     except Exception as ept:
         raise HTTPException(403, f'{ept}')

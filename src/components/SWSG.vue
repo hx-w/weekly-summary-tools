@@ -192,6 +192,7 @@ export default {
           params: {
             group_name: this.current_group_name,
             week: this.current_week,
+            filelist: JSON.stringify(this.target_list),
             force: force,
           },
         })
@@ -225,6 +226,7 @@ export default {
         });
     },
     swsgSubmit() {
+      console.log(this.target_list)
       this.execMerge(false);
     },
     groupChange(value) {
