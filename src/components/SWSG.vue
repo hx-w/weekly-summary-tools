@@ -4,7 +4,7 @@
       <h1>每周小组内汇总</h1>
     </a-row>
 
-    <a-row justify="center" type="flex">
+    <a-row justify="center" type="flex" style="margin-top: 10px">
       <a-col :span="18">
         <a-form
           :model="swsgForm"
@@ -109,7 +109,6 @@
     >
       <span v-html="ModalText">{{ ModalText }}</span>
     </a-modal>
-    <br />
   </div>
 </template>
 
@@ -140,7 +139,7 @@ export default {
     this.$http
       .get(`${apihost}/info/group_list`)
       .then((resp) => {
-        this.$message.success("获取小组名单成功");
+        // this.$message.success("获取小组名单成功");
         this.group_loading = false;
         this.group_list = resp.data;
         if (this.group_list.length > 0) {
@@ -205,7 +204,7 @@ export default {
               // JSX support
               content: (
                 <div>
-                  <p>周报文件合并在</p>
+                  <p>文件合并在</p>
                   <p><strong>{ this.distpath }</strong></p>
                   <p>请及时交验</p>
                 </div>
@@ -226,7 +225,6 @@ export default {
         });
     },
     swsgSubmit() {
-      console.log(this.target_list)
       this.execMerge(false);
     },
     groupChange(value) {
@@ -251,8 +249,8 @@ export default {
           })
           .then((resp) => {
             this.name_list = resp.data;
-            console.log(resp.data);
             this.target_list = this.name_list.map((item) => item.key);
+            console.log(this.target_list);
             this.btn_disable = (resp.data.length === 0);
           })
           .catch((error) => {

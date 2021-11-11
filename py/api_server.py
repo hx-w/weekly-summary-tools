@@ -54,6 +54,12 @@ async def swsg_exec_merge(group_name: str, week: str, filelist: str, force: bool
     except Exception as ept:
         raise HTTPException(403, f'{ept}')
 
+@api.get('/swmg/group_list')
+async def swmg_group_list(week: str):
+    try:
+        return await scripts.swmg_group_list(week)
+    except Exception as ept:
+        raise HTTPException(403, f'{ept}')
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:

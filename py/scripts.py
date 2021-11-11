@@ -27,6 +27,22 @@ async def info_week_list(reverse: bool, single_week: bool) -> list:
     ))
     return weeklist
 
+async def swmg_group_list(week: str) -> list:
+    source_dir = os.path.join(gconfig.summary, week)
+    file_pattern = re.compile(f'{gconfig.prefix}小组工作周报-{week}-(.*?).xlsx')
+    file_list = list(filter(
+        lambda x: re.match(file_pattern, x),
+        os.listdir(source_dir)
+    ))
+    file_list = list(map(
+        lambda x: {
+            'title': re.findall(file_pattern, x)[0],
+            'key': x
+        },
+        file_list
+    ))
+    return file_list
+
 
 async def swsg_name_list(source_dir: str, week: str) -> list:
     file_pattern = re.compile(f'{gconfig.prefix}个人工作周报-{week}-(.*?).xlsx')
