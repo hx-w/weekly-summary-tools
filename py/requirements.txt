@@ -2,3 +2,4 @@ fastapi
 uvicorn
 pyyaml
 openpyxl
+xlrd==1.2.0

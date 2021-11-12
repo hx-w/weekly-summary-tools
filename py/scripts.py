@@ -6,6 +6,8 @@ import os
 import shutil
 import openpyxl
 import datetime
+import xlrd
+from xlrd import xldate_as_tuple
 from config import gconfig
 
 align = openpyxl.styles.Alignment(
@@ -25,24 +27,18 @@ async def __exec(source_dir: str, file_list: list, dist_file: str, template_file
             break
     total_order = 1
     for eachfile in file_list:
-        newcol = re.findall(newcol_pattern, eachfile)[
-            0] if newcol_pattern else None
+        newcol = re.findall(newcol_pattern, eachfile)[0] if newcol_pattern else None
         full_path = os.path.join(source_dir, eachfile)
-        source_sheet = openpyxl.load_workbook(
-            full_path, read_only=True)['工作任务项']
-        # print(source_sheet[1])
-        for row_idx in range(2, source_sheet.max_row + 1):
-            row_element = []
-            for col_idx in range(1, source_sheet.max_column + 1):
-                row_element.append(source_sheet.cell(
-                    row=row_idx, column=col_idx).value)
+        source_sheet = xlrd.open_workbook(full_path).sheet_by_name('工作任务项')
+        for row_idx in range(1, source_sheet.nrows):
+            row_element = source_sheet.row_values(row_idx)
             if None in row_element:
                 break
             if newcol:
                 row_element.insert(col_name, newcol)
-            if row_element[col_date] and not isinstance(row_element[col_date], str):
-                row_element[col_date] = datetime.datetime.strftime(
-                    row_element[col_date], "%Y/%m/%d")
+            if row_element[col_date] and source_sheet.cell(row_idx, col_date).ctype == 3:
+                _date = datetime.datetime(*xldate_as_tuple(row_element[col_date], 0))
+                row_element[col_date] = _date.strftime("%Y/%m/%d")
             row_element[0] = total_order
             dist_sheet.append(row_element)
             total_order += 1
