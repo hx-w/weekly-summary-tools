@@ -33,6 +33,11 @@ async def week_list(reverse: bool = True, single_week: bool = True):
         raise HTTPException(403, f'{ept}')
 
 
+@api.get('/info/prefix')
+async def get_prefix():
+    return gconfig.prefix
+
+
 @api.get('/swsg/name_list')
 async def swsg_name_list(group_name: str, week: str):
     source_dir = os.path.join(
@@ -68,6 +73,15 @@ async def swmg_group_list(week: str):
 async def swmg_exec_merge(week: str, filelist: str, force: bool = False):
     try:
         success, res = await scripts.swmg_exec_merge(week, json.loads(filelist), force)
+        return {'success': success, 'res': res}
+    except Exception as ept:
+        raise HTTPException(403, f'{ept}')
+
+
+@api.get('/mw/exec_merge')
+async def mw_exec_merge(start_week_idx: int, end_week_idx: int, distname: str, force: bool = False):
+    try:
+        success, res = await scripts.mw_exec_merge(start_week_idx, end_week_idx, distname, force)
         return {'success': success, 'res': res}
     except Exception as ept:
         raise HTTPException(403, f'{ept}')

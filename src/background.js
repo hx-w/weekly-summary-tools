@@ -122,9 +122,6 @@ const createPyProc = () => {
       console.log(stdout)
     })
   }
-  if (pyProc != null) {
-    console.log('child process success')
-  }
 }
 
 const exitPyProc = () => {

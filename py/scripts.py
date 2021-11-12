@@ -78,11 +78,28 @@ async def info_week_list(reverse: bool, single_week: bool) -> list:
     weeklist = list(filter(
         lambda x: os.path.exists(
             os.path.join(os.path.join(gconfig.summary, x),
-            f'{gconfig.prefix}小组工作周报-{x}.xlsx')
+                         f'{gconfig.prefix}小组工作周报-{x}.xlsx')
         ),
         weeklist
     ))
     return weeklist
+
+
+async def mw_exec_merge(start_week_idx: int, end_week_idx: int, distname: str, force: bool = False) -> tuple:
+    source_dir = gconfig.summary
+    distname = os.path.join(gconfig.summary, distname)
+    week_list = await info_week_list(False, False)
+    file_list = list(map(
+        lambda x: os.path.join(x, f'{gconfig.prefix}小组工作周报-{x}.xlsx'),
+        week_list[start_week_idx: end_week_idx]
+    ))
+    if not force and os.path.exists(distname):
+        return False, distname
+    try:
+        await __exec(source_dir, file_list, distname, gconfig.template_project)
+        return True, distname
+    except Exception as ept:
+        return False, f'{ept}'
 
 
 async def swmg_group_list(week: str) -> list:
