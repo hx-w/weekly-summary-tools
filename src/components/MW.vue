@@ -72,7 +72,7 @@
               :labelCol="{ span: 3, offset: 2 }"
               :wrapperCol="{ span: 1 }"
             >
-              <a-input :addon-before="prefix" addon-after=".xlsx" :value="distname" style="width: 425px" />
+              <a-input :addon-before="prefix" addon-after=".xlsx" :value="distname" style="width: 423px" />
             </a-form-item>
           </a-row>
         </a-form>

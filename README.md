@@ -7,12 +7,12 @@ yarn install
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
+yarn run electron:serve
 ```
 
-### Compiles and minifies for production
+### Compiles and minifies for production(Only for Windows)
 ```
-yarn build
+yarn run electron:build
 ```
 
 ### Lints and fixes files
