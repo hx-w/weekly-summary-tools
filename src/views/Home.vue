@@ -1,13 +1,12 @@
 <template>
   <a-space direction="vertical" size="large">
-    <img alt="Vue logo" src="../assets/gopack_logo.png" style="margin-top: 30px" />
+    <img alt="Vue logo" :src="logo_path" style="margin-top: 30px" />
     <h1>
       欢迎使用
       <a-tag
-        @click="clicked"
         color="cyan"
         style="
-          font-size: 28px;
+          font-size: 30px;
           line-height: 30px;
           background: #fff;
           border: 0px;
@@ -16,6 +15,7 @@
           theme="twoTone"
           two-tone-color="#eb2f96"
           type="like"
+          @click="clicked"
       /></a-tag>
     </h1>
     <h3 style="color:#C0C0C0">在使用工具前，请先确定仓库已经更新至最新状态</h3>
@@ -27,11 +27,15 @@
 </template>
 
 <script>
+import logo from '../assets/logo.png';
+import logo_test from '../assets/logo_test.png';
+
 export default {
   name: "Home",
   data() {
     return {
       count: 0,
+      logo_path: logo
     };
   },
   methods: {
@@ -40,14 +44,10 @@ export default {
     },
     clicked() {
       this.count += 1;
-      if (this.count === 10) {
-        this.$notification.open({
-          message: "¿¿¿",
-          description:
-            "¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿",
-          icon: <a-icon type="question" rotate="180" style="color: #108ee9" />,
-          duration: 0,
-        });
+      if (this.count % 2 === 0) {
+        this.logo_path = logo;
+      } else {
+        this.logo_path = logo_test;
       }
     },
   },

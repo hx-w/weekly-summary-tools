@@ -156,7 +156,7 @@ export default {
       prefix: '通用网格生成软件',
       distname: '项目工作报告',
       customStyle:
-        "background: #ffffff;border-radius: 4px;margin-bottom: 0px;border: 0;overflow: hidden; width:510px",
+        "background: #fff;border-radius: 4px;margin-bottom: 0px;border: 0;overflow: hidden; width:510px",
     };
   },
   mounted() {
@@ -203,10 +203,11 @@ export default {
         this.distname = '项目工作报告';
         return;
       }
+      const end_split = this.week_list[this.end_week_idx].split('-');
       this.distname = [
         "项目工作报告",
         this.week_list[this.start_week_idx].split('-').slice(0, 2).join(''),
-        this.week_list[this.end_week_idx].split('-').slice(0, 3, 2).join(''),
+        [end_split[0], end_split[2]].join(''),
       ].join('-');
     },
     startWeekChange(value) {
@@ -221,7 +222,7 @@ export default {
       if (this.start_week_idx > 0) {
         this.end_week_list = this.end_week_list.slice(0, -this.start_week_idx);
       }
-      // this.changeDistName();
+      this.changeDistName();
     },
     endWeekChange(value) {
       this.end_week = value;
@@ -237,6 +238,7 @@ export default {
           this.end_week_idx + 1
         );
       }
+      this.changeDistName();
     },
     handleWarnOk(e) {
       this.warn_visible = false;
