@@ -259,7 +259,7 @@ export default {
         })
         .then((resp) => {
           this.distpath = resp.data.res;
-          this.ModalText = `<div><strong>${this.distpath}</strong>已存在<br />继续执行将会覆盖原文件，是否继续？</div>`;
+          this.ModalText = `<div><p><strong>${this.distpath}</strong>已存在</p><p>继续执行将会覆盖原文件，是否继续？</p></div>`;
           if (resp.data.success) {
             this.$success({
               title: "周报合并成功",
