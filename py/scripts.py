@@ -74,7 +74,7 @@ async def info_week_list(reverse: bool, single_week: bool) -> list:
     weeklist = list(filter(
         lambda x: os.path.exists(
             os.path.join(os.path.join(gconfig.summary, x),
-                         f'{gconfig.prefix}小组工作周报-{x}.xlsx')
+                         f'{gconfig.prefix}项目工作周报-{x}.xlsx')
         ),
         weeklist
     ))
@@ -86,7 +86,7 @@ async def mw_exec_merge(start_week_idx: int, end_week_idx: int, distname: str, f
     distname = os.path.join(gconfig.summary, distname)
     week_list = await info_week_list(False, False)
     file_list = list(map(
-        lambda x: os.path.join(x, f'{gconfig.prefix}小组工作周报-{x}.xlsx'),
+        lambda x: os.path.join(x, f'{gconfig.prefix}项目工作周报-{x}.xlsx'),
         week_list[start_week_idx: end_week_idx]
     ))
     if not force and os.path.exists(distname):
@@ -129,7 +129,7 @@ async def swmg_group_list(week: str) -> list:
 async def swmg_exec_merge(week: str, filelist: list, force: bool = False) -> tuple:
     source_dir = os.path.join(gconfig.summary, week)
     pattern = re.compile(f'{gconfig.prefix}小组工作周报-{week}-(.*?).xlsx')
-    dist_path = os.path.join(source_dir, f'{gconfig.prefix}小组工作周报-{week}.xlsx')
+    dist_path = os.path.join(source_dir, f'{gconfig.prefix}项目工作周报-{week}.xlsx')
     if not force and os.path.exists(dist_path):
         return False, dist_path
     try:
