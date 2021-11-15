@@ -45,7 +45,6 @@ async function createWindow() {
   win.on('close', () => {
     if (process.platform !== 'darwin') {
       app.quit()
-      win.quit()
     }
   })
 }
@@ -111,15 +110,34 @@ const createPyProc = () => {
       console.log(stdout)
     })
   } else {
-    // let script = path.join('resources', 'api_server.exe')
-    // let script = `file://${__dirname}/`
     let arg = 'config.yml'
-    // pyProc = require('child_process').exec(`${script} ${arg}`, function(error, stdout, stderr) {
     pyProc = require('child_process').execFile(`${__dirname}/api_server.exe`, [arg], function (error, stdout, stderr) {
       if (error) {
-        throw error
+        // kill process on 54321
+        const cmd = process.platform == 'win32' ? 'netstat -ano' : 'ps aux';
+        require('child_process').exec(cmd, function (err, stdout, stderr) {
+          if (err) { return console.log(err); }
+          stdout.split('\n').filter(function (line) {
+            var p = line.trim().split(/\s+/);
+            var address = p[1];
+
+            if (address != undefined) {
+              if (address.split(':')[1] == "54321") {
+                exec('taskkill /F /pid ' + p[4], function (err, stdout, stderr) {
+                  if (err) {
+                    throw "释放端口失败"
+                  }
+                  pyProc = require('child_process').execFile(`${__dirname}/api_server.exe`, [arg], function (error, stdout, stderr) {
+                    if (error) {
+                      throw error;
+                    }
+                  });
+                });
+              }
+            }
+          });
+        });
       }
-      console.log(stdout)
     })
   }
 }
@@ -133,5 +151,4 @@ const exitPyProc = () => {
 
 app.on('ready', createPyProc)
 app.on('will-quit', exitPyProc)
-app.on('before-quit', exitPyProc)
 app.on('window-all-closed', exitPyProc)
