@@ -123,7 +123,7 @@ const createPyProc = () => {
 
             if (address != undefined) {
               if (address.split(':')[1] == "54321") {
-                exec('taskkill /F /pid ' + p[4], function (err, stdout, stderr) {
+                require('child_process').exec('taskkill /F /pid ' + p[4], function (err, stdout, stderr) {
                   if (err) {
                     throw "释放端口失败"
                   }
