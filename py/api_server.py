@@ -89,6 +89,7 @@ async def mw_exec_merge(start_week_idx: int, end_week_idx: int, distname: str, f
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
+        exit()
         raise Exception('arg number wrong')
     if scripts.check_port_in_use(54321):
         raise Exception('port 54321 in use')
