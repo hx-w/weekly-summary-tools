@@ -148,6 +148,7 @@ export default {
         } else {
           this.btn_disable = true;
         }
+        this.getNameList(this.current_group_name, this.current_week);
       })
       .catch((error) => {
         this.$message.error(`获取小组名单失败：${error}`);
