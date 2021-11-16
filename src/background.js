@@ -1,13 +1,13 @@
 'use strict'
-// const electron = require('electron')
-// const app = electron.app
-// const BrowserWindow = electron.BrowserWindow
-// const protocol = electron.protocol
 import { app, protocol, BrowserWindow } from "electron";
+import { send } from "process";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 // const DEVINSTALLER = require('electron-devtools-installer')
 // const installExtension = DEVINSTALLER.installExtension
 // const VUEJS_DEVTOOLS = DEVINSTALLER.VUEJS_DEVTOOLS
+
+let pyProc = null
+let win = null
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 
@@ -18,7 +18,7 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 680,
     // titleBarStyle: 'hidden',
@@ -36,10 +36,6 @@ async function createWindow() {
     if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
-    // Load the index.html when not in development
-    // win.loadFile('app://./index.html')
-    // path = require('path')
-    // win.loadFile(path.join(__dirname, 'index.html'))
     win.loadURL(`file://${__dirname}/index.html`)
   }
   win.on('close', () => {
@@ -95,9 +91,19 @@ if (isDevelopment) {
   }
 }
 
-const path = require('path')
 
-let pyProc = null
+const path = require('path');
+
+function wsend(message) {
+  if (win !== null && win !== undefined) {
+    win.webContents.send('api-init', message);
+  } else {
+    if (pyProc !== null && pyProc !== undefined) {
+      pyProc.kill();
+      pyProc = null;
+    }
+  }
+}
 
 const createPyProc = () => {
   if (isDevelopment) {
@@ -105,7 +111,10 @@ const createPyProc = () => {
     let arg = path.join('./', 'config.yml')
     pyProc = require('child_process').exec(`python3 ${script} ${arg}`, function (error, stdout, stderr) {
       if (error) {
+        wsend('failed');
         throw error
+      } else {
+        wsend('success');
       }
       console.log(stdout)
     })
@@ -113,39 +122,17 @@ const createPyProc = () => {
     let arg = 'config.yml'
     pyProc = require('child_process').execFile(`${__dirname}/api_server.exe`, [arg], function (error, stdout, stderr) {
       if (error) {
+        wsend('failed');
+        throw error
+      } else {
+        wsend('success');
       }
-      // if (error) {
-      //   // kill process on 54321
-      //   const cmd = process.platform == 'win32' ? 'netstat -ano' : 'ps aux';
-      //   require('child_process').exec(cmd, function (err, stdout, stderr) {
-      //     if (err) { return console.log(err); }
-      //     stdout.split('\n').filter(function (line) {
-      //       var p = line.trim().split(/\s+/);
-      //       var address = p[1];
-
-      //       if (address != undefined) {
-      //         if (address.split(':')[1] == "54321") {
-      //           require('child_process').exec('taskkill /F /pid ' + p[4], function (err, stdout, stderr) {
-      //             if (err) {
-      //               throw "释放端口失败"
-      //             }
-      //             pyProc = require('child_process').execFile(`${__dirname}/api_server.exe`, [arg], function (error, stdout, stderr) {
-      //               if (error) {
-      //                 throw error;
-      //               }
-      //             });
-      //           });
-      //         }
-      //       }
-      //     });
-      //   });
-      // }
     })
   }
 }
 
 const exitPyProc = () => {
-  if (pyProc !== null) {
+  if (pyProc !== null && pyProc !== undefined) {
     pyProc.kill()
   }
   pyProc = null
@@ -153,4 +140,3 @@ const exitPyProc = () => {
 
 app.on('ready', createPyProc)
 app.on('will-quit', exitPyProc)
-app.on('window-all-closed', exitPyProc)

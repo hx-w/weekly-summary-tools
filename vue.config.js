@@ -2,6 +2,7 @@ module.exports = {
     pluginOptions: {
         electronBuilder: {
             customFileProtocol: './',
+            nodeIntegration: true,
             builderOptions: {
                 directories: {
                     "output": "build/",

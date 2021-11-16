@@ -29,6 +29,11 @@
 <script>
 import logo from '../assets/logo.png';
 import logo_test from '../assets/logo_test.png';
+const { ipcRenderer } = require('electron');
+
+ipcRenderer.on('api-init', (event, arg) => {
+  alert(arg);
+})
 
 export default {
   name: "Home",
@@ -37,6 +42,11 @@ export default {
       count: 0,
       logo_path: logo
     };
+  },
+  mounted () {
+    // ipcRenderer.on('api-init', (event, arg) => {
+    //   console.log(arg);
+    // })
   },
   methods: {
     goToWork() {
