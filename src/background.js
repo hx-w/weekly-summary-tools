@@ -1,4 +1,5 @@
 'use strict'
+import { SSL_OP_EPHEMERAL_RSA } from "constants";
 import { app, protocol, BrowserWindow } from "electron";
 import { send } from "process";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
@@ -112,7 +113,6 @@ const createPyProc = () => {
     pyProc = require('child_process').exec(`python3 ${script} ${arg}`, function (error, stdout, stderr) {
       if (error) {
         wsend('failed');
-        throw error
       } else {
         wsend('success');
       }
@@ -123,7 +123,6 @@ const createPyProc = () => {
     pyProc = require('child_process').execFile(`${__dirname}/api_server.exe`, [arg], function (error, stdout, stderr) {
       if (error) {
         wsend('failed');
-        throw error
       } else {
         wsend('success');
       }

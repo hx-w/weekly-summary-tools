@@ -18,35 +18,36 @@
           @click="clicked"
       /></a-tag>
     </h1>
-    <h3 style="color:#C0C0C0">在使用工具前，请先确定仓库已经更新至最新状态</h3>
-    <a-button type="primary" @click="goToWork"
-      >前往工作台<a-icon type="right" />
-    </a-button>
+    <h3 style="color: #c0c0c0">在使用工具前，请先确定仓库已经更新至最新状态</h3>
+    <a-spin :spinning="loading">
+      <a-button type="primary" @click="goToWork">
+        前往工作台<a-icon type="right" />
+      </a-button>
+    </a-spin>
     <br />
   </a-space>
 </template>
 
 <script>
-import logo from '../assets/logo.png';
-import logo_test from '../assets/logo_test.png';
-const { ipcRenderer } = require('electron');
-
-ipcRenderer.on('api-init', (event, arg) => {
-  alert(arg);
-})
+import logo from "../assets/logo.png";
+import logo_test from "../assets/logo_test.png";
+const { ipcRenderer } = require("electron");
 
 export default {
   name: "Home",
   data() {
     return {
       count: 0,
-      logo_path: logo
+      logo_path: logo,
+      loading: true,
     };
   },
-  mounted () {
-    // ipcRenderer.on('api-init', (event, arg) => {
-    //   console.log(arg);
-    // })
+  mounted() {
+    ipcRenderer.on("api-init", (event, arg) => {
+      this.loading = false;
+      if (arg === "success") {
+      }
+    });
   },
   methods: {
     goToWork() {
