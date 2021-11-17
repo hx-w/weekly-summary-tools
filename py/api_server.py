@@ -91,7 +91,6 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         exit()
         raise Exception('arg number wrong')
-    if scripts.check_port_in_use(54321):
-        raise Exception('port 54321 in use')
+    scripts.killport(54321)
     gconfig.load_config(sys.argv[1])
     uvicorn.run(api, host='127.0.0.1', port=54321)
