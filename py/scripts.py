@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import socket
 import re
 import os
 import shutil
@@ -176,15 +175,11 @@ async def swsg_exec_merge(group_name: str, week: str, filelist: list, force: boo
         return False, f'{ept}'
 
 
-def check_port_in_use(port, host='127.0.0.1'):
-    s = None
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(1)
-        s.connect((host, int(port)))
-        return True
-    except socket.error:
-        return False
-    finally:
-        if s:
-            s.close()
+def killport(port: int):
+    fndcmd = f'netstat -aon | findstr {port}'
+    result = os.popen(fndcmd).read()
+    if len(result) == 0: return
+    pid = result.split()[-1]
+    killcmd = f'taskkill -f -pid {pid}'
+    result = os.popen(killcmd).read()
+    return result
