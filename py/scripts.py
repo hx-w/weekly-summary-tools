@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import socket
 import re
 import os
 import shutil
