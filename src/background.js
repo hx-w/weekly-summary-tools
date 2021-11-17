@@ -75,6 +75,7 @@ app.on('ready', async () => {
     // }
   }
   createWindow()
+  createPyProc()
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -106,7 +107,7 @@ function wsend(message) {
   }
 }
 
-const createPyProc = () => {
+async function createPyProc() {
   if (isDevelopment) {
     let script = path.join('py', 'api_server.py')
     let arg = path.join('./', 'config.yml')
@@ -116,7 +117,6 @@ const createPyProc = () => {
       } else {
         wsend('success');
       }
-      console.log(stdout)
     })
   } else {
     let arg = 'config.yml'
@@ -137,5 +137,5 @@ const exitPyProc = () => {
   pyProc = null
 }
 
-app.on('ready', createPyProc)
+// app.on('ready', createPyProc)
 app.on('will-quit', exitPyProc)

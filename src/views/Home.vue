@@ -45,7 +45,6 @@ export default {
   mounted() {
     ipcRenderer.on("api-init", (event, arg) => {
       this.loading = false;
-      alert(arg);
     });
   },
   methods: {
