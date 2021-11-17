@@ -39,6 +39,7 @@ async function createWindow() {
   }
   win.on('close', () => {
     if (process.platform !== 'darwin') {
+      exitPyProc()
       app.quit()
     }
   })
@@ -50,6 +51,7 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    exitPyProc()
     app.quit()
   }
 })
@@ -81,11 +83,13 @@ if (isDevelopment) {
   if (process.platform === 'win32') {
     process.on('message', (data) => {
       if (data === 'graceful-exit') {
+        exitPyProc()
         app.quit()
       }
     })
   } else {
     process.on('SIGTERM', () => {
+      exitPyProc()
       app.quit()
     })
   }
@@ -129,7 +133,7 @@ async function createPyProc() {
   }
 }
 
-const exitPyProc = () => {
+async function exitPyProc() {
   if (pyProc !== null && pyProc !== undefined) {
     pyProc.kill()
   }
@@ -137,4 +141,4 @@ const exitPyProc = () => {
 }
 
 // app.on('ready', createPyProc)
-app.on('will-quit', exitPyProc)
+// app.on('will-quit', exitPyProc)
