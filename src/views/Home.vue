@@ -19,10 +19,12 @@
       /></a-tag>
     </h1>
     <h3 style="color: #c0c0c0">在使用工具前，请先确定仓库已经更新至最新状态</h3>
-    <a-spin :spinning="loading">
-      <a-button type="primary" @click="goToWork">
-        前往工作台<a-icon type="right" />
-      </a-button>
+    <a-spin :spinning="loading" :delay="500">
+      <div>
+        <a-button type="primary" @click="goToWork">
+          前往工作台<a-icon type="right" />
+        </a-button>
+      </div>
     </a-spin>
     <br />
   </a-space>
@@ -31,7 +33,6 @@
 <script>
 import logo from "../assets/logo.png";
 import logo_test from "../assets/logo_test.png";
-const { ipcRenderer } = require("electron");
 
 export default {
   name: "Home",
@@ -39,13 +40,13 @@ export default {
     return {
       count: 0,
       logo_path: logo,
-      loading: true,
+      loading: true
     };
   },
   mounted() {
-    ipcRenderer.on("api-init", (event, arg) => {
+    setTimeout(() => {
       this.loading = false;
-    });
+    }, 1000);
   },
   methods: {
     goToWork() {

@@ -1,7 +1,5 @@
 'use strict'
-import { SSL_OP_EPHEMERAL_RSA } from "constants";
 import { app, protocol, BrowserWindow } from "electron";
-import { send } from "process";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 // const DEVINSTALLER = require('electron-devtools-installer')
 // const installExtension = DEVINSTALLER.installExtension
@@ -123,6 +121,7 @@ async function createPyProc() {
     pyProc = require('child_process').execFile(`${__dirname}/api_server.exe`, [arg], function (error, stdout, stderr) {
       if (error) {
         wsend('failed');
+        throw '脚本启动失败' + error
       } else {
         wsend('success');
       }
