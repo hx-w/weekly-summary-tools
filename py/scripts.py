@@ -179,7 +179,14 @@ def killport(port: int):
     fndcmd = f'netstat -aon | findstr {port}'
     result = os.popen(fndcmd).read()
     if len(result) == 0: return
-    pid = result.split()[-1]
+    reslist = result.split()
+    pid = 0
+    for res in reslist:
+        try:
+            pid = int(res)
+            assert pid != 0
+            break
+        except: pass
     killcmd = f'taskkill -f -pid {pid}'
     result = os.popen(killcmd).read()
     return result
