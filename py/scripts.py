@@ -176,10 +176,11 @@ async def swsg_exec_merge(group_name: str, week: str, filelist: list, force: boo
 
 
 def killport(port: int):
-    fndcmd = f'netstat -aon | findstr {port}'
-    result = os.popen(fndcmd).read()
-    if len(result) == 0: return
-    pid = result.split()[-1]
-    killcmd = f'taskkill -f -pid {pid}'
-    result = os.popen(killcmd).read()
-    return result
+    pass
+    # fndcmd = f'netstat -aon | findstr {port}'
+    # result = os.popen(fndcmd).read()
+    # if len(result) == 0: return
+    # pid = result.split()[-1]
+    # killcmd = f'taskkill -f -pid {pid}'
+    # result = os.popen(killcmd).read()
+    # return result

@@ -39,6 +39,10 @@ async function createWindow() {
     win.loadURL(`file://${__dirname}/index.html`)
   }
   win.on('close', () => {
+    axios
+      .get('http://127.0.0.1:54321/exit')
+      .then((resp) => { })
+      .catch((error) => { })
     if (process.platform !== 'darwin') {
       exitPyProc()
       app.quit()
@@ -51,14 +55,15 @@ async function createWindow() {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    axios
-      .get('http://127.0.0.1:54321/exit')
-      .then((resp) => { })
-      .catch((error) => { })
-    exitPyProc()
-    app.quit()
-  }
+  axios
+    .get('http://127.0.0.1:54321/exit')
+    .then((resp) => { })
+    .catch((error) => { })
+  app.quit()
+  // if (process.platform !== 'darwin') {
+  //   exitPyProc()
+  //   app.quit()
+  // }
 })
 
 app.on('activate', () => {
@@ -121,6 +126,7 @@ async function createPyProc() {
     pyProc = require('child_process').exec(`python3 ${script} ${arg}`, function (error, stdout, stderr) {
       if (error) {
         wsend('failed');
+        throw error;
       } else {
         wsend('success');
       }
@@ -130,7 +136,7 @@ async function createPyProc() {
     pyProc = require('child_process').execFile(`${__dirname}/api_server.exe`, [arg], function (error, stdout, stderr) {
       if (error) {
         wsend('failed');
-        throw '脚本启动失败' + error
+        throw error;
       } else {
         wsend('success');
       }
