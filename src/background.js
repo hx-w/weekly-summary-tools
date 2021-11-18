@@ -84,10 +84,6 @@ app.on('ready', async () => {
     //   console.error('Vue Devtools failed to install:', e.toString())
     // }
   }
-  axios
-    .get('http://127.0.0.1:54321/exit')
-    .then((resp) => { })
-    .catch((error) => { })
   createWindow()
   createPyProc()
 })
