@@ -136,7 +136,6 @@ async function createPyProc() {
     pyProc = require('child_process').execFile(`${__dirname}/api_server.exe`, [arg], function (error, stdout, stderr) {
       if (error) {
         wsend('failed');
-        throw error;
       } else {
         wsend('success');
       }
