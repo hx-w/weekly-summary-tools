@@ -1,6 +1,7 @@
 'use strict'
 import { app, protocol, BrowserWindow } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
+import axios from 'axios'
 // const DEVINSTALLER = require('electron-devtools-installer')
 // const installExtension = DEVINSTALLER.installExtension
 // const VUEJS_DEVTOOLS = DEVINSTALLER.VUEJS_DEVTOOLS
@@ -51,6 +52,10 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    axios
+      .get('http://127.0.0.1:54321/exit')
+      .then((resp) => { })
+      .catch((error) => { })
     exitPyProc()
     app.quit()
   }
@@ -134,7 +139,7 @@ async function createPyProc() {
 }
 
 async function exitPyProc() {
-  if (pyProc !== null && pyProc !== undefined) {
+  if (pyProc !== null) {
     pyProc.kill()
   }
   pyProc = null

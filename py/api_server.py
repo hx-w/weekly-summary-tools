@@ -87,9 +87,13 @@ async def mw_exec_merge(start_week_idx: int, end_week_idx: int, distname: str, f
         raise HTTPException(403, f'{ept}')
 
 
+@api.get('/exit')
+async def will_exit():
+    os._exit(0)
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        exit()
         raise Exception('arg number wrong')
     scripts.killport(54321)
     gconfig.load_config(sys.argv[1])
