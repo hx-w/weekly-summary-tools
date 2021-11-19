@@ -3,6 +3,7 @@
 import os
 import sys
 import json
+import threading
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -97,4 +98,6 @@ if __name__ == '__main__':
         raise Exception('arg number wrong')
     scripts.killport(54321)
     gconfig.load_config(sys.argv[1])
+
+    threading.Timer(60 * 30, lambda x: os._exit(0), ['']).start()
     uvicorn.run(api, host='127.0.0.1', port=54321)
