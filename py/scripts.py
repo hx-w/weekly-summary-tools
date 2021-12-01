@@ -26,17 +26,20 @@ async def __exec(source_dir: str, file_list: list, dist_file: str, template_file
             break
     total_order = 1
     for eachfile in file_list:
-        newcol = re.findall(newcol_pattern, eachfile)[0] if newcol_pattern else None
+        newcol = re.findall(newcol_pattern, eachfile)[
+            0] if newcol_pattern else None
         full_path = os.path.join(source_dir, eachfile)
         source_sheet = xlrd.open_workbook(full_path).sheet_by_name('工作任务项')
+
         for row_idx in range(1, source_sheet.nrows):
             row_element = source_sheet.row_values(row_idx)
             if None in row_element:
                 break
             if newcol:
                 row_element.insert(col_name, newcol)
-            if row_element[col_date] and source_sheet.cell(row_idx, col_date).ctype == 3:
-                _date = datetime.datetime(*xldate_as_tuple(row_element[col_date], 0))
+            if row_element[col_date] and source_sheet.cell(row_idx, col_date - int(newcol_pattern != None)).ctype == 3:
+                _date = datetime.datetime(
+                    *xldate_as_tuple(row_element[col_date], 0))
                 row_element[col_date] = _date.strftime("%Y/%m/%d")
             row_element[0] = total_order
             dist_sheet.append(row_element)
@@ -81,12 +84,13 @@ async def info_week_list(reverse: bool, single_week: bool) -> list:
 
 
 async def mw_exec_merge(start_week_idx: int, end_week_idx: int, distname: str, force: bool = False) -> tuple:
+    print(start_week_idx, end_week_idx)
     source_dir = gconfig.summary
     distname = os.path.join(gconfig.summary, distname)
     week_list = await info_week_list(False, False)
     file_list = list(map(
         lambda x: os.path.join(x, f'{gconfig.prefix}项目工作周报-{x}.xlsx'),
-        week_list[start_week_idx: end_week_idx]
+        week_list[start_week_idx: end_week_idx + 1]
     ))
     if not force and os.path.exists(distname):
         return False, distname
@@ -178,7 +182,8 @@ async def swsg_exec_merge(group_name: str, week: str, filelist: list, force: boo
 def killport(port: int):
     fndcmd = f'netstat -aon | findstr {port}'
     result = os.popen(fndcmd).read()
-    if len(result) == 0: return
+    if len(result) == 0:
+        return
     reslist = result.split()
     pid = 0
     for res in reslist:
@@ -186,7 +191,8 @@ def killport(port: int):
             pid = int(res)
             assert pid != 0
             break
-        except: pass
+        except:
+            pass
     killcmd = f'taskkill -f -pid {pid}'
     result = os.popen(killcmd).read()
     return result

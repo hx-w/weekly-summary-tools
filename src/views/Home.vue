@@ -40,7 +40,7 @@ export default {
     return {
       count: 0,
       logo_path: logo,
-      loading: true
+      loading: true,
     };
   },
   mounted() {
