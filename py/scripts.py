@@ -12,6 +12,8 @@ from config import gconfig
 align = openpyxl.styles.Alignment(
     horizontal='left', vertical='center', wrap_text=False)
 
+async def check_row_valid(row_list: list) -> bool:
+    return '' not in map(lambda x: x.strip(), row_list)
 
 async def __exec(source_dir: str, file_list: list, dist_file: str, template_file: str, newcol_pattern: re.Pattern = None):
     shutil.copyfile(template_file, dist_file)
@@ -37,6 +39,8 @@ async def __exec(source_dir: str, file_list: list, dist_file: str, template_file
                 break
             if newcol:
                 row_element.insert(col_name, newcol)
+            if not check_row_valid(row_element):
+                continue
             if row_element[col_date] and source_sheet.cell(row_idx, col_date - int(newcol_pattern != None)).ctype == 3:
                 _date = datetime.datetime(
                     *xldate_as_tuple(row_element[col_date], 0))
